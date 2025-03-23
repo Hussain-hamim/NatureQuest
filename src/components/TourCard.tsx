@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Calendar, Flag, Users } from 'lucide-react';
@@ -16,7 +16,7 @@ interface TourCardProps {
   price: number;
   rating: number;
   ratingsCount: number;
-  imageCover: string;
+  imageCover?: string; // Make it optional
 }
 
 const TourCard = ({
@@ -34,12 +34,21 @@ const TourCard = ({
   ratingsCount,
   imageCover,
 }: TourCardProps) => {
+  // Generate a random image URL if imageCover is missing
+  const randomImage = useMemo(() => {
+    return `https://picsum.photos/600/400?random=${Math.floor(
+      Math.random() * 1000
+    )}`;
+  }, []);
+
   return (
     <div className='card flex flex-col h-full'>
       <div className='card__header'>
         <div
           className='card__picture'
-          style={{ backgroundImage: `url(${imageCover})` }}
+          style={{
+            backgroundImage: `url(${randomImage})`,
+          }}
         >
           <div className='card__picture-overlay'>&nbsp;</div>
         </div>
