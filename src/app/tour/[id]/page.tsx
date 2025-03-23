@@ -1,10 +1,24 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 import { MapPin, Calendar, Flag, Users, Star } from 'lucide-react';
 import Link from 'next/link';
 import axios from 'axios';
+import L from 'leaflet';
+
+// Fix for default marker icon in Leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 export default function TourPage({
   params,
@@ -13,6 +27,13 @@ export default function TourPage({
 }) {
   const [tours, setTours] = useState([]);
   const [tourId, setTourId] = useState<string | null>(null);
+
+  // Generate a random image URL if imageCover is missing
+  let randomImage = useMemo(() => {
+    return `https://picsum.photos/600/400?random=${Math.floor(
+      Math.random() * 1000
+    )}`;
+  }, []);
 
   useEffect(() => {
     // Unwrap the params Promise
@@ -42,15 +63,17 @@ export default function TourPage({
     );
   }
 
+  const startLocation = tour.startLocation;
+
   return (
     <div>
       {/* Header */}
       <section className='relative h-96'>
         <div
           className='absolute inset-0 bg-cover bg-center'
-          style={{ backgroundImage: `url(${tour.imageCover})` }}
+          style={{ backgroundImage: `url(${randomImage})` }}
         >
-          <div className='absolute inset-0 bg-gradient-to-r from-natours-green-light to-natours-green-dark opacity-70'></div>
+          <div className='absolute inset-0 bg-gradient-to-r from-natours-green-light to-natours-green-dark opacity-30'></div>
         </div>
         <div className='absolute bottom-16 left-1/2 transform -translate-x-1/2 text-center'>
           <h1 className='text-4xl font-bold text-white mb-4'>
@@ -81,7 +104,7 @@ export default function TourPage({
                 <div className='flex items-start gap-4'>
                   <span className='text-natours-gray-dark-2'>Next date</span>
                   <span className='text-natours-gray-dark font-medium'>
-                    {tour.startDate}
+                    {tour.startDates[0]}
                   </span>
                 </div>
                 <div className='flex items-start gap-4'>
@@ -108,15 +131,6 @@ export default function TourPage({
               <h2 className='text-2xl font-bold text-natours-gray-dark-3 mb-6'>
                 About {tour.name} tour
               </h2>
-              {/*  this is for the local data */}
-              {/* {tour.description.map((paragraph, i) => (
-                <p
-                  key={i}
-                  className='text-natours-gray-dark mb-4 leading-relaxed'
-                >
-                  {paragraph}
-                </p>
-              ))} */}
               <p className='text-natours-gray-dark mb-4 leading-relaxed'>
                 {tour.description}
               </p>
@@ -132,7 +146,7 @@ export default function TourPage({
             {tour.images.map((image, i) => (
               <div key={i} className='h-80 relative overflow-hidden rounded-lg'>
                 <Image
-                  src={image}
+                  src={(randomImage += 1)}
                   alt={`${tour.name} Tour ${i + 1}`}
                   fill
                   className='object-cover'
@@ -143,6 +157,46 @@ export default function TourPage({
         </div>
       </section>
 
+      {/* Map Section */}
+      <section className='py-12 bg-natours-gray-light-1'>
+        <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
+          <h2 className='text-2xl font-bold text-natours-gray-dark-3 mb-6'>
+            Start Location
+          </h2>
+          <p className='text-lg text-natours-gray-dark mb-4'>
+            <strong>Address:</strong> {startLocation.address}
+          </p>
+          <p className='text-lg text-natours-gray-dark mb-6'>
+            <strong>Description:</strong> {startLocation.description}
+          </p>
+          <MapContainer
+            center={[
+              startLocation.coordinates[1],
+              startLocation.coordinates[0],
+            ]}
+            zoom={13}
+            style={{ height: '400px', width: '100%' }}
+          >
+            <TileLayer
+              url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <Marker
+              position={[
+                startLocation.coordinates[1],
+                startLocation.coordinates[0],
+              ]}
+            >
+              <Popup>
+                <strong>{tour.name}</strong> starts here!
+                <br />
+                {startLocation.description}
+              </Popup>
+            </Marker>
+          </MapContainer>
+        </div>
+      </section>
+
       {/* Reviews */}
       <section className='py-16 bg-white'>
         <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -150,7 +204,6 @@ export default function TourPage({
             Reviews
           </h2>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-            {/* Sample reviews */}
             <div className='bg-natours-gray-light-1 p-6 rounded-lg shadow-sm'>
               <div className='flex items-center gap-4 mb-4'>
                 <div className='w-12 h-12 rounded-full bg-natours-green flex items-center justify-center text-white font-bold text-xl'>
