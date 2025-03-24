@@ -8,7 +8,8 @@ export default function HomePage() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:8000/api/v1/tours')
+      // .get('http://localhost:8000/api/v1/tours')
+      .get('https://node-nature.onrender.com/api/v1/tours')
       .then((res) => {
         setTours(res.data.data.data); // Correctly access the nested array
         // reason why there is three data.data.data is because the response is nested like this:

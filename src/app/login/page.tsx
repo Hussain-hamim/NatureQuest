@@ -23,10 +23,13 @@ export default function LoginPage() {
     setSuccessMessage(null);
 
     try {
-      const res = await axios.post('http://localhost:8000/api/v1/users/login', {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        'https://node-nature.onrender.com/api/v1/users/login',
+        {
+          email,
+          password,
+        }
+      );
 
       setSuccessMessage('Account created successfully!');
       console.log('User signed up:', res.data);

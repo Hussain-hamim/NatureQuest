@@ -26,7 +26,8 @@ export default function SignupPage() {
 
     try {
       const res = await axios.post(
-        'http://localhost:8000/api/v1/users/signup',
+        // 'http://localhost:8000/api/v1/users/signup',
+        'https://node-nature.onrender.com/api/v1/users/signup',
         {
           name,
           email,

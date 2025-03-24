@@ -90,7 +90,8 @@ export default function TourPage({
   useEffect(() => {
     if (tourId) {
       axios
-        .get(`http://localhost:8000/api/v1/tours/${tourId}`)
+        // .get(`http://localhost:8000/api/v1/tours/${tourId}`)
+        .get(`https://node-nature.onrender.com/api/v1/tours/${tourId}`)
         .then((res) => {
           setTour(res.data.data.doc); // Set the tour data
         })
