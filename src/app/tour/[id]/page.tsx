@@ -2,31 +2,50 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+// import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { MapPin, Calendar, Flag, Users, Star } from 'lucide-react';
 import Link from 'next/link';
 import axios from 'axios';
 import L from 'leaflet';
+import dynamic from 'next/dynamic';
 
-// Fix for default marker icon in Leaflet
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl:
-    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl:
-    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+// Dynamically import MapContainer and other Leaflet components
+const MapContainer = dynamic(
+  () => import('react-leaflet').then((mod) => mod.MapContainer),
+  { ssr: false }
+);
+const TileLayer = dynamic(
+  () => import('react-leaflet').then((mod) => mod.TileLayer),
+  { ssr: false }
+);
+const Marker = dynamic(
+  () => import('react-leaflet').then((mod) => mod.Marker),
+  { ssr: false }
+);
+const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
+  ssr: false,
 });
+
+// // Fix for default marker icon in Leaflet
+// delete L.Icon.Default.prototype._getIconUrl;
+// L.Icon.Default.mergeOptions({
+//   iconRetinaUrl:
+//     'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+//   iconUrl:
+//     'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+//   shadowUrl:
+//     'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+// });
 
 export default function TourPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const [tours, setTours] = useState([]);
+  const [tour, setTours] = useState();
   const [tourId, setTourId] = useState<string | null>(null);
+  console.log('tourid: ', tourId);
 
   // Generate a random image URL if imageCover is missing
   let randomImage = useMemo(() => {
@@ -35,23 +54,38 @@ export default function TourPage({
     )}`;
   }, []);
 
+  // Resolve the params promise and set the tourId
   useEffect(() => {
-    // Unwrap the params Promise
     params.then((resolvedParams) => {
       setTourId(resolvedParams.id);
     });
-
-    axios
-      .get('http://localhost:8000/api/v1/tours')
-      .then((res) => {
-        setTours(res.data.data.data); // Correctly access the nested array
-      })
-      .catch((err) => {
-        console.error(err);
-      });
   }, [params]);
 
-  const tour = tours.find((t) => t.id === tourId);
+  // Fetch the tour data only when tourId is set
+  useEffect(() => {
+    if (tourId) {
+      axios
+        .get(`http://localhost:8000/api/v1/tours/${tourId}`)
+        .then((res) => {
+          setTours(res.data.data.doc); // Set the tour data
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [tourId]);
+
+  if (!tour) {
+    return (
+      <div className='max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8'>
+        <h1 className='text-3xl font-bold text-natours-gray-dark'>
+          Loading tour details...
+        </h1>
+      </div>
+    );
+  }
+
+  // const tour = tours.find((t) => t.id === tourId);
 
   if (!tour) {
     return (
@@ -204,29 +238,39 @@ export default function TourPage({
             Reviews
           </h2>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-            <div className='bg-natours-gray-light-1 p-6 rounded-lg shadow-sm'>
-              <div className='flex items-center gap-4 mb-4'>
-                <div className='w-12 h-12 rounded-full bg-natours-green flex items-center justify-center text-white font-bold text-xl'>
-                  L
+            {tour.reviews && tour.reviews.length > 0 ? (
+              tour.reviews.map((review) => (
+                <div
+                  key={review._id}
+                  className='bg-natours-gray-light-1 p-6 rounded-lg shadow-sm'
+                >
+                  {/* User Info */}
+                  <div className='flex items-center gap-4 mb-4'>
+                    <div className='w-12 h-12 rounded-full bg-natours-green flex items-center justify-center text-white font-bold text-xl'>
+                      {review.user.name[0].toUpperCase()}
+                    </div>
+                    <h6 className='font-bold text-natours-gray-dark-3'>
+                      {review.user.name}
+                    </h6>
+                  </div>
+                  {/* Review Text */}
+                  <p className='text-natours-gray-dark mb-4'>{review.review}</p>
+                  {/* Star Rating */}
+                  <div className='flex gap-1'>
+                    {[...Array(review.rating)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className='w-5 h-5 text-natours-green fill-natours-green'
+                      />
+                    ))}
+                  </div>
                 </div>
-                <h6 className='font-bold text-natours-gray-dark-3'>
-                  Lourdes Browning
-                </h6>
+              ))
+            ) : (
+              <div className='text-center text-natours-gray-dark'>
+                No reviews available for this tour.
               </div>
-              <p className='text-natours-gray-dark mb-4'>
-                Cras mollis nisi parturient mi nec aliquet suspendisse sagittis
-                eros condimentum scelerisque taciti mattis praesent feugiat eu
-                nascetur a tincidunt
-              </p>
-              <div className='flex gap-1'>
-                {[1, 2].map((_, i) => (
-                  <Star
-                    key={i}
-                    className='w-5 h-5 text-natours-green fill-natours-green'
-                  />
-                ))}
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
