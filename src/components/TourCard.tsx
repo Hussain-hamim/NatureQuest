@@ -70,7 +70,7 @@ const TourCard = ({
             <span>{location}</span>
           </div>
           <div className='flex items-center gap-2 text-sm text-natours-gray-dark'>
-            <Calendar size={16} className='text-natours-green' />
+            <Calendar size={20} className='text-natours-green' />
             <span>{startDate}</span>
           </div>
           <div className='flex items-center gap-2 text-sm text-natours-gray-dark'>

@@ -36,7 +36,7 @@ export default function HomePage() {
             duration={tour.duration}
             difficulty={tour.difficulty}
             summary={tour.summary}
-            location={tour.startLocation?.type || 'Unknown'}
+            location={tour.locations[0].description}
             startDate={tour.startDates[0] || 'N/A'}
             stops={tour.locations.length}
             maxGroupSize={tour.maxGroupSize}

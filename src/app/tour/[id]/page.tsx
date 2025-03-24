@@ -36,6 +36,7 @@ type Tour = {
   location: string;
   startDate: string; // Date
   stops: number;
+  ratingAverage: number; // Average rating
   maxGroupSize: number;
   price: number; // Price in USD
   rating: number; // Average rating
@@ -70,16 +71,8 @@ export default function TourPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const [tour, setTours] = useState<Tour>();
+  const [tour, setTour] = useState<Tour>();
   const [tourId, setTourId] = useState<string | null>(null);
-  console.log('tourid: ', tourId);
-
-  // // Generate a random image URL if imageCover is missing
-  // let randomImage = useMemo(() => {
-  //   return `https://picsum.photos/600/400?random=${Math.floor(
-  //     Math.random() * 1000
-  //   )}`;
-  // }, []);
 
   // Generate a deterministic random image URL using tourId
   let randomImage = useMemo(() => {
@@ -99,7 +92,7 @@ export default function TourPage({
       axios
         .get(`http://localhost:8000/api/v1/tours/${tourId}`)
         .then((res) => {
-          setTours(res.data.data.doc); // Set the tour data
+          setTour(res.data.data.doc); // Set the tour data
         })
         .catch((err) => {
           console.error(err);
@@ -117,18 +110,6 @@ export default function TourPage({
     );
   }
 
-  // const tour = tours.find((t) => t.id === tourId);
-
-  if (!tour) {
-    return (
-      <div className='max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8'>
-        <h1 className='text-3xl font-bold text-natours-gray-dark'>
-          Tour not found
-        </h1>
-      </div>
-    );
-  }
-
   const startLocation = tour.startLocation;
 
   return (
@@ -139,7 +120,7 @@ export default function TourPage({
           className='absolute inset-0 bg-cover bg-center'
           style={{ backgroundImage: `url(${randomImage})` }}
         >
-          <div className='absolute inset-0 bg-gradient-to-r from-natours-green-light to-natours-green-dark opacity-30'></div>
+          <div className='absolute inset-0 bg-gradient-to-r from-natours-green-light to-natours-green-dark opacity-40'></div>
         </div>
         <div className='absolute bottom-16 left-1/2 transform -translate-x-1/2 text-center'>
           <h1 className='text-4xl font-bold text-white mb-4'>
@@ -188,7 +169,7 @@ export default function TourPage({
                 <div className='flex items-start gap-4'>
                   <span className='text-natours-gray-dark-2'>Rating</span>
                   <span className='text-natours-gray-dark font-medium'>
-                    {tour.rating} / 5
+                    {tour.ratingAverage} / 5
                   </span>
                 </div>
               </div>
@@ -197,6 +178,7 @@ export default function TourPage({
               <h2 className='text-2xl font-bold text-natours-gray-dark-3 mb-6'>
                 About {tour.name} tour
               </h2>
+
               <p className='text-natours-gray-dark mb-4 leading-relaxed'>
                 {tour.description}
               </p>
@@ -208,9 +190,15 @@ export default function TourPage({
       {/* Tour Images */}
       <section className='py-12 bg-natours-gray-light-1'>
         <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
+          <h2 className='text-2xl font-bold text-natours-gray-dark-3 mb-6'>
+            Tour Images
+          </h2>
           <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
             {tour.images.map((image, i) => (
-              <div key={i} className='h-80 relative overflow-hidden rounded-lg'>
+              <div
+                key={i}
+                className='h-80 relative overflow-hidden  rounded-lg'
+              >
                 <Image
                   src={(randomImage += 1)}
                   alt={`${tour.name} Tour ${i + 1}`}
@@ -270,7 +258,7 @@ export default function TourPage({
       {/* Reviews */}
       <section className='py-16 bg-white'>
         <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
-          <h2 className='text-2xl font-bold text-natours-gray-dark-3 mb-6 text-center'>
+          <h2 className='text-2xl font-bold text-natours-gray-dark-3 mb-6'>
             Reviews
           </h2>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
@@ -293,9 +281,9 @@ export default function TourPage({
                   <p className='text-natours-gray-dark mb-4'>{review.review}</p>
                   {/* Star Rating */}
                   <div className='flex gap-1'>
-                    {[...Array(review.rating)].map((_, i) => (
+                    {[...Array(review.rating)].map((rating, i) => (
                       <Star
-                        key={i}
+                        key={rating}
                         className='w-5 h-5 text-natours-green fill-natours-green'
                       />
                     ))}
