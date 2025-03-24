@@ -1,8 +1,14 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useUser } from '@/context/userContext';
+import { User } from 'lucide-react';
 
 const Header = () => {
+  const { userCurrent, setUserCurrent } = useUser();
+
   return (
     <header className='header'>
       <nav className='nav nav--tours'>
@@ -22,16 +28,38 @@ const Header = () => {
           />
         </Link>
       </div>
-      <nav className='nav nav--user'>
-        <Link href='/login' className='nav__el'>
-          Log in
-        </Link>
-        <Link href='/signup' className='nav__el nav__el--cta'>
-          <span className='bg-transparent border border-white text-white rounded-full py-1 px-4 hover:bg-white hover:text-natours-gray-dark-3 transition-all duration-200'>
-            Sign up
+
+      {userCurrent ? (
+        <span>
+          <User
+            size={22}
+            color='tomato'
+            style={{ display: 'inline', marginRight: 5, marginBottom: 7 }}
+          />
+          <span
+            style={{
+              color: 'green',
+              fontWeight: 'bold',
+              letterSpacing: 1,
+              fontSize: 18,
+            }}
+            className='border-b-2 border-green-500 '
+          >
+            {userCurrent.name}
           </span>
-        </Link>
-      </nav>
+        </span>
+      ) : (
+        <nav className='nav nav--user'>
+          <Link href='/login' className='nav__el'>
+            Log in
+          </Link>
+          <Link href='/signup' className='nav__el nav__el--cta'>
+            <span className='bg-transparent border border-white text-white rounded-full py-1 px-4 hover:bg-white hover:text-natours-gray-dark-3 transition-all duration-200'>
+              Sign up
+            </span>
+          </Link>
+        </nav>
+      )}
     </header>
   );
 };

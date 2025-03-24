@@ -3,6 +3,7 @@ import { Lato } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { UserProvider } from '../context/userContext';
 
 const lato = Lato({
   weight: ['300', '400', '700', '900'],
@@ -24,9 +25,11 @@ export default function RootLayout({
   return (
     <html lang='en' className={`${lato.variable}`}>
       <body>
-        <Header />
-        <main className='min-h-screen'>{children}</main>
-        <Footer />
+        <UserProvider>
+          <Header />
+          <main className='min-h-screen'>{children}</main>
+          <Footer />
+        </UserProvider>
       </body>
     </html>
   );
