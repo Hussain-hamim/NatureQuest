@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useUser } from '@/context/userContext';
-import { User } from 'lucide-react';
+import { User, UserCircle } from 'lucide-react';
 
 const Header = () => {
   const { userCurrent, setUserCurrent } = useUser();
@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <header className='header'>
       <nav className='nav nav--tours'>
-        <Link href='/' className='nav__el'>
+        <Link href='/' className='nav__el size-3'>
           All tours
         </Link>
       </nav>
@@ -31,19 +31,19 @@ const Header = () => {
 
       {userCurrent ? (
         <span>
-          <User
-            size={22}
-            color='tomato'
-            style={{ display: 'inline', marginRight: 5, marginBottom: 7 }}
+          <UserCircle
+            size={24}
+            color='green'
+            style={{ display: 'inline', marginRight: 5, marginBottom: 1 }}
           />
           <span
             style={{
-              color: 'green',
-              fontWeight: 'bold',
+              color: 'white',
+              fontWeight: '400',
               letterSpacing: 1,
               fontSize: 18,
             }}
-            className='border-b-2 border-green-500 '
+            className='border-b-2 border-green-800'
           >
             {userCurrent.name}
           </span>
