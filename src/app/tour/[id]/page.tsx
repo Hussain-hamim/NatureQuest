@@ -27,32 +27,64 @@ const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
   ssr: false,
 });
 
-// // Fix for default marker icon in Leaflet
-// delete L.Icon.Default.prototype._getIconUrl;
-// L.Icon.Default.mergeOptions({
-//   iconRetinaUrl:
-//     'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-//   iconUrl:
-//     'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-//   shadowUrl:
-//     'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-// });
+type Tour = {
+  id: string;
+  name: string;
+  duration: number;
+  difficulty: 'easy' | 'medium' | 'difficult';
+  summary: string;
+  location: string;
+  startDate: string; // Date
+  stops: number;
+  maxGroupSize: number;
+  price: number; // Price in USD
+  rating: number; // Average rating
+  ratingsCount: number; // Number of ratings
+  imageCover?: string; // Image URL
+  images: string[]; // Array of image URLs
+  startLocation: {
+    type: string;
+    coordinates: [number, number];
+    address: string;
+    description: string;
+  };
+  description: string;
+  startDates: string[]; // Array of dates
+  guides: string[]; // Array of guide IDs
+  reviews: {
+    // Array of reviews
+    _id: string;
+    review: string;
+    rating: number;
+    createdAt: string; // Date
+    user: {
+      _id: string;
+      name: string;
+      photo: string;
+    };
+  }[];
+};
 
 export default function TourPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const [tour, setTours] = useState();
+  const [tour, setTours] = useState<Tour>();
   const [tourId, setTourId] = useState<string | null>(null);
   console.log('tourid: ', tourId);
 
-  // Generate a random image URL if imageCover is missing
+  // // Generate a random image URL if imageCover is missing
+  // let randomImage = useMemo(() => {
+  //   return `https://picsum.photos/600/400?random=${Math.floor(
+  //     Math.random() * 1000
+  //   )}`;
+  // }, []);
+
+  // Generate a deterministic random image URL using tourId
   let randomImage = useMemo(() => {
-    return `https://picsum.photos/600/400?random=${Math.floor(
-      Math.random() * 1000
-    )}`;
-  }, []);
+    return `https://picsum.photos/600/400?random=${tourId || 'default'}`;
+  }, [tourId]);
 
   // Resolve the params promise and set the tourId
   useEffect(() => {
@@ -194,40 +226,44 @@ export default function TourPage({
       {/* Map Section */}
       <section className='py-12 bg-natours-gray-light-1'>
         <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
-          <h2 className='text-2xl font-bold text-natours-gray-dark-3 mb-6'>
-            Start Location
-          </h2>
-          <p className='text-lg text-natours-gray-dark mb-4'>
-            <strong>Address:</strong> {startLocation.address}
-          </p>
-          <p className='text-lg text-natours-gray-dark mb-6'>
-            <strong>Description:</strong> {startLocation.description}
-          </p>
-          <MapContainer
-            center={[
-              startLocation.coordinates[1],
-              startLocation.coordinates[0],
-            ]}
-            zoom={13}
-            style={{ height: '400px', width: '100%' }}
-          >
-            <TileLayer
-              url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <Marker
-              position={[
-                startLocation.coordinates[1],
-                startLocation.coordinates[0],
-              ]}
-            >
-              <Popup>
-                <strong>{tour.name}</strong> starts here!
-                <br />
-                {startLocation.description}
-              </Popup>
-            </Marker>
-          </MapContainer>
+          {tour.startLocation && (
+            <>
+              <h2 className='text-2xl font-bold text-natours-gray-dark-3 mb-6'>
+                Start Location
+              </h2>
+              <p className='text-lg text-natours-gray-dark mb-4'>
+                <strong>Address:</strong> {startLocation.address}
+              </p>
+              <p className='text-lg text-natours-gray-dark mb-6'>
+                <strong>Description:</strong> {startLocation.description}
+              </p>
+              <MapContainer
+                center={[
+                  startLocation.coordinates[1],
+                  startLocation.coordinates[0],
+                ]}
+                zoom={13}
+                style={{ height: '400px', width: '100%' }}
+              >
+                <TileLayer
+                  url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <Marker
+                  position={[
+                    startLocation.coordinates[1],
+                    startLocation.coordinates[0],
+                  ]}
+                >
+                  <Popup>
+                    <strong>{tour.name}</strong> starts here!
+                    <br />
+                    {startLocation.description}
+                  </Popup>
+                </Marker>
+              </MapContainer>
+            </>
+          )}
         </div>
       </section>
 

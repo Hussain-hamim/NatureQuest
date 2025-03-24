@@ -10,6 +10,7 @@ const Footer = () => {
           <Link href='/'>
             <Image
               src='https://ext.same-assets.com/3016008597/3733573812.png'
+              // src={'../data/logo.png'}
               alt='Natours Logo'
               width={120}
               height={40}
