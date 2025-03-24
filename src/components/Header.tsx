@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <header className='header'>
       <nav className='nav nav--tours'>
-        <Link href='/' className='nav__el size-3'>
+        <Link href='/' className='nav__el '>
           All tours
         </Link>
       </nav>
@@ -36,17 +36,18 @@ const Header = () => {
             color='green'
             style={{ display: 'inline', marginRight: 5, marginBottom: 1 }}
           />
-          <span
+          <Link
+            href={'/'}
             style={{
               color: 'white',
               fontWeight: '400',
               letterSpacing: 1,
-              fontSize: 18,
+              fontSize: 16,
             }}
-            className='border-b-2 border-green-800'
+            className='border-b-2 border-green-800 font-serif'
           >
             {userCurrent.name}
-          </span>
+          </Link>
         </span>
       ) : (
         <nav className='nav nav--user'>
