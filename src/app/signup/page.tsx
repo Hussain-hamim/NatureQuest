@@ -54,11 +54,7 @@ export default function SignupPage() {
         Create your account!
       </h2>
       {error && <p className='text-red-500'>{error}</p>}
-      {user && (
-        <p className='text-green-500'>
-          {user.name} Account created successfully!
-        </p>
-      )}
+
       <form className='flex flex-col gap-6' onSubmit={handleSignup}>
         <div className='flex flex-col gap-2'>
           <label htmlFor='name'>Your name</label>
