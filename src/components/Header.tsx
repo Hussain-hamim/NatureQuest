@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useUser } from '@/context/userContext';
-import { User, UserCircle } from 'lucide-react';
+import { LogOut, User, UserCircle } from 'lucide-react';
 
 const Header = () => {
   const { userCurrent, setUserCurrent } = useUser();
@@ -30,25 +30,34 @@ const Header = () => {
       </div>
 
       {userCurrent ? (
-        <span>
-          <UserCircle
-            size={24}
-            color='green'
-            style={{ display: 'inline', marginRight: 5, marginBottom: 1 }}
-          />
-          <Link
-            href={'/'}
-            style={{
-              color: 'white',
-              fontWeight: '400',
-              letterSpacing: 1,
-              fontSize: 16,
-            }}
-            className='border-b-2 border-green-800 font-serif'
-          >
-            {userCurrent.name}
-          </Link>
-        </span>
+        <>
+          <span>
+            <button
+              style={{ marginRight: 30, color: 'white' }}
+              onClick={() => setUserCurrent('')}
+            >
+              <LogOut
+                size={24}
+                style={{ display: 'inline', paddingRight: '5px' }}
+              />
+              Log Out
+            </button>
+            <UserCircle
+              size={24}
+              style={{ display: 'inline', marginRight: 5, marginBottom: 2 }}
+            />
+            <Link
+              href={'/'}
+              style={{
+                color: 'white',
+                paddingRight: 10,
+                fontSize: 18,
+              }}
+            >
+              {userCurrent.name}
+            </Link>
+          </span>
+        </>
       ) : (
         <nav className='nav nav--user'>
           <Link href='/login' className='nav__el'>
