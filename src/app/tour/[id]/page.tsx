@@ -3,29 +3,29 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 // import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
 import { MapPin, Calendar, Flag, Users, Star } from 'lucide-react';
 import Link from 'next/link';
 import axios from 'axios';
-import L from 'leaflet';
+// import 'leaflet/dist/leaflet.css';
+// import L from 'leaflet';
 import dynamic from 'next/dynamic';
 
-// Dynamically import MapContainer and other Leaflet components
-const MapContainer = dynamic(
-  () => import('react-leaflet').then((mod) => mod.MapContainer),
-  { ssr: false }
-);
-const TileLayer = dynamic(
-  () => import('react-leaflet').then((mod) => mod.TileLayer),
-  { ssr: false }
-);
-const Marker = dynamic(
-  () => import('react-leaflet').then((mod) => mod.Marker),
-  { ssr: false }
-);
-const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
-  ssr: false,
-});
+// // Dynamically import MapContainer and other Leaflet components
+// const MapContainer = dynamic(
+//   () => import('react-leaflet').then((mod) => mod.MapContainer),
+//   { ssr: false }
+// );
+// const TileLayer = dynamic(
+//   () => import('react-leaflet').then((mod) => mod.TileLayer),
+//   { ssr: false }
+// );
+// const Marker = dynamic(
+//   () => import('react-leaflet').then((mod) => mod.Marker),
+//   { ssr: false }
+// );
+// const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
+//   ssr: false,
+// });
 
 type Tour = {
   id: string;
@@ -139,7 +139,6 @@ export default function TourPage({
           </div>
         </div>
       </section>
-
       {/* Quick Facts & Description */}
       <section className='bg-white py-16'>
         <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -187,7 +186,6 @@ export default function TourPage({
           </div>
         </div>
       </section>
-
       {/* Tour Images */}
       <section className='py-12 bg-natours-gray-light-1'>
         <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -211,8 +209,7 @@ export default function TourPage({
           </div>
         </div>
       </section>
-
-      {/* Map Section */}
+      {/* Map Section
       <section className='py-12 bg-natours-gray-light-1'>
         <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
           {tour.startLocation && (
@@ -254,8 +251,7 @@ export default function TourPage({
             </>
           )}
         </div>
-      </section>
-
+      </section> */}
       {/* Reviews */}
       <section className='py-16 bg-white'>
         <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -284,7 +280,7 @@ export default function TourPage({
                   <div className='flex gap-1'>
                     {[...Array(review.rating)].map((rating, i) => (
                       <Star
-                        key={rating}
+                        key={i}
                         className='w-5 h-5 text-natours-green fill-natours-green'
                       />
                     ))}
