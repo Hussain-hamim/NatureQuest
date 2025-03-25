@@ -10,7 +10,7 @@ const Header = () => {
   const { userCurrent, setUserCurrent } = useUser();
 
   return (
-    <header className='header'>
+    <header className='header '>
       <nav className='nav nav--tours'>
         <Link href='/' className='nav__el '>
           All tours
@@ -30,34 +30,33 @@ const Header = () => {
       </div>
 
       {userCurrent ? (
-        <>
-          <span>
-            <button
-              style={{ marginRight: 30, color: 'white' }}
-              onClick={() => setUserCurrent('')}
-            >
-              <LogOut
-                size={24}
-                style={{ display: 'inline', paddingRight: '5px' }}
-              />
-              Log Out
-            </button>
-            <UserCircle
+        <span className='flex justify-center'>
+          <button
+            style={{ marginRight: 16, color: 'white' }}
+            onClick={() => setUserCurrent('')}
+          >
+            {/* <LogOut
               size={24}
-              style={{ display: 'inline', marginRight: 5, marginBottom: 2 }}
-            />
-            <Link
-              href={'/'}
-              style={{
-                color: 'white',
-                paddingRight: 10,
-                fontSize: 18,
-              }}
-            >
-              {userCurrent.name}
-            </Link>
-          </span>
-        </>
+              color='white'
+              style={{ display: 'inline', paddingRight: '5px' }}
+              /> */}
+            LogOut
+          </button>
+          <UserCircle
+            size={24}
+            color='white'
+            style={{ display: 'inline', marginRight: 5, marginBottom: -2 }}
+          />
+          <Link
+            href={'/'}
+            style={{
+              color: 'white',
+              fontSize: 18,
+            }}
+          >
+            {userCurrent.name}
+          </Link>
+        </span>
       ) : (
         <nav className='nav nav--user'>
           <Link href='/login' className='nav__el'>

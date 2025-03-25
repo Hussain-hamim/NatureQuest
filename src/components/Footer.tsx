@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 const Footer = () => {
   return (
-    <footer className='bg-natours-gray-light-1 pt-8 pb-6 mt-16'>
+    <footer className='bg-natours-gray-light-1 m-2 pt-8 pb-6 mt-16'>
       <div className='flex flex-col items-center'>
         <div className='mb-6'>
           <Link href='/'>
@@ -27,14 +27,7 @@ const Footer = () => {
               About us
             </Link>
           </li>
-          <li>
-            <Link
-              href='#'
-              className='text-natours-gray-dark hover:text-natours-green'
-            >
-              Download apps
-            </Link>
-          </li>
+
           <li>
             <Link
               href='#'
@@ -43,14 +36,7 @@ const Footer = () => {
               Become a guide
             </Link>
           </li>
-          <li>
-            <Link
-              href='#'
-              className='text-natours-gray-dark hover:text-natours-green'
-            >
-              Careers
-            </Link>
-          </li>
+
           <li>
             <Link
               href='#'
@@ -61,7 +47,7 @@ const Footer = () => {
           </li>
         </ul>
         <p className='footer__copyright text-natours-gray-dark text-sm'>
-          © 2025 by Hsn.
+          © 2025 - made with 💖 by Hsn.
         </p>
       </div>
     </footer>
