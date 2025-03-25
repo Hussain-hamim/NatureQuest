@@ -227,16 +227,16 @@ export default function TourPage({
                 <strong>Description:</strong> {startLocation.description}
               </p>
               <MapContainer
-                // center={[
-                //   startLocation.coordinates[1],
-                //   startLocation.coordinates[0],
-                // ]}
-                // zoom={13}
+                center={[
+                  startLocation.coordinates[1],
+                  startLocation.coordinates[0],
+                ]}
+                zoom={13}
                 style={{ height: '400px', width: '100%' }}
               >
                 <TileLayer
                   url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                  // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
                 <Marker
                   position={[
