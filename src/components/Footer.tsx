@@ -9,12 +9,11 @@ const Footer = () => {
         <div className='mb-6'>
           <Link href='/'>
             <Image
-              src='https://ext.same-assets.com/3016008597/3733573812.png'
-              // src={'../data/logo.png'}
+              src='https://ext.same-assets.com/3016008597/1934609313.png'
               alt='Natours Logo'
-              width={120}
-              height={40}
-              className='h-10 w-auto'
+              width={70}
+              height={35}
+              className='h-9 w-auto'
             />
           </Link>
         </div>

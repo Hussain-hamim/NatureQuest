@@ -13,7 +13,7 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: 'Natours | Exciting tours for adventurous people',
+  title: 'NatureQuest | Exciting tours for adventurous people',
   description: 'Explore exciting tour options for your next adventure',
 };
 
