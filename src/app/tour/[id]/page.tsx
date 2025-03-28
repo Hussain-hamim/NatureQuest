@@ -105,7 +105,8 @@ export default function TourPage({
     return (
       <div className='max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8'>
         <h1 className='text-3xl font-bold text-natours-gray-dark'>
-          Loading tour details...
+          Loading tour details
+          <span className='loading loading-infinity loading-xl text-green-600'></span>
         </h1>
       </div>
     );
@@ -187,7 +188,7 @@ export default function TourPage({
         </div>
       </section>
       {/* Tour Images */}
-      <section className='py-12 bg-natours-gray-light-1'>
+      <section className='py-12 bg-natours-gray-light-1 '>
         <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
           <h2 className='text-2xl font-bold text-natours-gray-dark-3 mb-6'>
             Tour Images
@@ -202,28 +203,34 @@ export default function TourPage({
                   src={(randomImage += 1)}
                   alt={`${tour.name} Tour ${i + 1}`}
                   fill
-                  className='object-cover'
+                  className='object-cover hover:translate-y-1 hover:shadow-lg transition-transform duration-300 ease-in-out'
                 />
               </div>
             ))}
           </div>
         </div>
       </section>
-      {/* Map Section
+
+      {/* Map Section */}
+
       <section className='py-12 bg-natours-gray-light-1'>
         <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
           {tour.startLocation && (
             <>
               <h2 className='text-2xl font-bold text-natours-gray-dark-3 mb-6'>
-                Start Location
+                Location
               </h2>
+              <p className='text-lg text-natours-gray-dark mb-4'>
+                <strong>Map:</strong>
+                <span className='loading ml-3 loading-infinity loading-xl text-green-600'></span>
+              </p>
               <p className='text-lg text-natours-gray-dark mb-4'>
                 <strong>Address:</strong> {startLocation.address}
               </p>
               <p className='text-lg text-natours-gray-dark mb-6'>
                 <strong>Description:</strong> {startLocation.description}
               </p>
-              <MapContainer
+              {/* <MapContainer
                 center={[
                   startLocation.coordinates[1],
                   startLocation.coordinates[0],
@@ -247,11 +254,11 @@ export default function TourPage({
                     {startLocation.description}
                   </Popup>
                 </Marker>
-              </MapContainer>
+              </MapContainer> */}
             </>
           )}
         </div>
-      </section> */}
+      </section>
       {/* Reviews */}
       <section className='py-16 bg-white'>
         <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>

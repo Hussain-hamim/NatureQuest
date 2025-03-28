@@ -65,7 +65,7 @@ export default function SignupPage() {
             id='name'
             placeholder='hsn'
             required
-            className='py-3 px-4 border rounded focus:ring-2 focus:ring-green-500'
+            className='py-3 px-4 border border-natours-gray-light-2 bg-natours-gray-light-1 rounded focus:outline-none focus:ring-2 focus:ring-natours-green'
           />
         </div>
         <div className='flex flex-col gap-2'>
@@ -77,7 +77,7 @@ export default function SignupPage() {
             id='email'
             placeholder='hsn@dev.com'
             required
-            className='py-3 px-4 border rounded focus:ring-2 focus:ring-green-500'
+            className='py-3 px-4 border border-natours-gray-light-2 bg-natours-gray-light-1 rounded focus:outline-none focus:ring-2 focus:ring-natours-green'
           />
         </div>
         <div className='flex flex-col gap-2'>
@@ -90,7 +90,7 @@ export default function SignupPage() {
             placeholder='••••••••'
             required
             minLength={8}
-            className='py-3 px-4 border rounded focus:ring-2 focus:ring-green-500'
+            className='py-3 px-4 border border-natours-gray-light-2 bg-natours-gray-light-1 rounded focus:outline-none focus:ring-2 focus:ring-natours-green'
           />
         </div>
         <div className='flex flex-col gap-2'>
@@ -103,10 +103,10 @@ export default function SignupPage() {
             placeholder='••••••••'
             required
             minLength={8}
-            className='py-3 px-4 border rounded focus:ring-2 focus:ring-green-500'
+            className='py-3 px-4 border border-natours-gray-light-2 bg-natours-gray-light-1 rounded focus:outline-none focus:ring-2 focus:ring-natours-green'
           />
         </div>
-        <button type='submit' className='btn btn--green w-full'>
+        <button type='submit' className='btn pb-2 border-0 btn--green w-full'>
           Sign up
         </button>
       </form>

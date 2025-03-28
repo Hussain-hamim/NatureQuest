@@ -30,7 +30,11 @@ export default function HomePage() {
     return (
       <div className='max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8'>
         <h1 className='text-3xl font-bold text-natours-gray-dark'>
-          Loading Tours...
+          {/* <span className='loading loading-spinner text-accent-foreground'></span> */}
+          {/* <span className="loading loading-infinity loading-xl"></span> */}
+          {/* <span className='loading loading-spinner text-accent-foreground'></span> */}
+          Loading Tours
+          <span className='loading loading-infinity loading-xl text-green-600'></span>
         </h1>
       </div>
     );
@@ -38,7 +42,7 @@ export default function HomePage() {
 
   return (
     <div className='max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8'>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 '>
         {tours.map((tour) => (
           <TourCard
             key={tour.id}

@@ -80,7 +80,7 @@ export default function LoginPage() {
           />
         </div>
         <div>
-          <button type='submit' className='btn btn--green w-full'>
+          <button type='submit' className='btn pb-2 border-0 btn--green w-full'>
             Login
           </button>
         </div>

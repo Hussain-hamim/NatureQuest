@@ -42,7 +42,7 @@ const TourCard = ({
   }, []);
 
   return (
-    <div className='card flex flex-col h-full'>
+    <div className='card flex flex-col h-full hover:translate-y-2 hover:shadow-lg transition-transform duration-300 ease-in-out'>
       <div className='card__header'>
         <div
           className='card__picture'
@@ -97,7 +97,10 @@ const TourCard = ({
             <span> rating ({ratingsCount})</span>
           </p>
         </div>
-        <Link href={`/tour/${id}`} className='btn btn--green btn--small'>
+        <Link
+          href={`/tour/${id}`}
+          className='btn border-0 btn--green btn--small'
+        >
           Details
         </Link>
       </div>
