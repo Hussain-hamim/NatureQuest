@@ -46,7 +46,7 @@ const Footer = () => {
           </li>
         </ul>
         <p className='footer__copyright text-natours-gray-dark text-sm'>
-          © 2025 - made with 💖 by Hsn.
+          2025 - DesignPlus
         </p>
       </div>
     </footer>
